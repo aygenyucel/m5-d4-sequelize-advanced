@@ -3,6 +3,8 @@ import cors from "cors";
 import listEndpoints from "express-list-endpoints";
 import { pgConnect, syncModels } from "./db.js";
 import productRouter from "./api/product/index.js";
+import usersRouter from "./api/users/index.js";
+import reviewsRouter from "./api/reviews/index.js";
 
 const server = express();
 const port = process.env.PORT || 3001;
@@ -14,6 +16,8 @@ server.use(express.json());
 //**********ENDPOINTS ************** */
 
 server.use("/product", productRouter);
+server.use("/users", usersRouter);
+server.use("/reviews", reviewsRouter);
 
 //*********ERROR HANDLERS **************** */
 
