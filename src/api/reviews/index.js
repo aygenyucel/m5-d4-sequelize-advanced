@@ -20,10 +20,32 @@ reviewsRouter.get("/", async (req, res, next) => {
       include: [
         {
           model: UsersModel,
+          attributes: ["firstName", "lastName"],
         },
       ],
     });
-    res.send(blogs);
+    res.send(reviews);
+  } catch (error) {
+    next(error);
+  }
+});
+
+reviewsRouter.put("/:reviewId", async (req, res, next) => {
+  try {
+    const [numberOfUpdatedRows, updatedRecords] = await ReviewsModel.update(
+      req.body,
+      {
+        where: { id: req.params.reviewId },
+        returning: true,
+      }
+    );
+    if (numberOfUpdatedRows === 1) {
+      res.send(updatedRecords[0]);
+    } else {
+      next(
+        createHttpError(404, `Review with id ${req.params.reviewId} not found!`)
+      );
+    }
   } catch (error) {
     next(error);
   }
